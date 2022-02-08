@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API",
+    "description": "API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3010",
+      "name": "DEV"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Home"],
+        "summary": "Home",
+        "description": "Home",
+        "operationId": "getHome",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/departments": {
+      "get": {
+        "tags": ["Departments"],
+        "summary": "Get all departments",
+        "description": "Get all departments",
+        "operationId": "getDepartments",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Departments"],
+        "summary": "Create a department",
+        "description": "Create a department",
+        "operationId": "createDepartment",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Department object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Department": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "supervisor_name": {
+          "type": "string"
+        },
+        "supervisor_email": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

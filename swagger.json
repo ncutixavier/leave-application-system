@@ -59,6 +59,74 @@
           }
         }
       }
+    },
+    "/api/v1/departments/{id}": {
+      "get": {
+        "tags": ["Departments"],
+        "summary": "Get a department by id",
+        "description": "Get a department by id",
+        "operationId": "getDepartmentById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of department to return",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Departments"],
+        "summary": "Update a department",
+        "description": "Update a department",
+        "operationId": "updateDepartment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of department to return",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Department object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Departments"],
+        "summary": "Delete a department",
+        "description": "Delete a department",
+        "operationId": "deleteDepartment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of department to return",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Deleted"
+          }
+        }
+      }
     }
   },
   "definitions": {

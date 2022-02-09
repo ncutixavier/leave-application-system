@@ -15,6 +15,11 @@ export default {
     supervisor_email: "test@test.ai",
   },
   create: {
+    name: "testin",
+    supervisor_name: "testing",
+    supervisor_email: "testing@test.ai",
+  },
+  createExist: {
     name: "test",
     supervisor_name: "test",
     supervisor_email: "test@test.ai",

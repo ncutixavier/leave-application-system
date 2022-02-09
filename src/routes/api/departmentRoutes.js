@@ -8,4 +8,9 @@ departmentRouter
   .post(departmentValidation, departmentController.createDep)
   .get(departmentController.getAllDep);
 
+departmentRouter
+  .route("/:id")
+  .get(departmentController.getDepById)
+  .patch(departmentController.updateDep)
+  .delete(departmentController.deleteDep);
 export default departmentRouter;

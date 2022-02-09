@@ -170,13 +170,11 @@ describe("TEST DEPARTMENT ENDPOINT", () => {
         done();
       });
   });
-});
 
-describe("TEST OTHER DEPARTMENT ENDPOINT", () => {
   it("Should not create department when name is exist", (done) => {
     request(app)
       .post("/api/v1/departments")
-      .send(departmentMock.create)
+      .send(departmentMock.createExist)
       .end((err, res) => {
         expect(res.statusCode).to.equal(409);
         expect(res.body).to.have.property("error");

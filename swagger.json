@@ -127,6 +127,43 @@
           }
         }
       }
+    },
+    "/api/v1/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register a user",
+        "description": "Register a user",
+        "operationId": "registerUser",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users",
+        "description": "Get all users",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -140,6 +177,23 @@
           "type": "string"
         },
         "supervisor_email": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "department_name": {
           "type": "string"
         }
       }

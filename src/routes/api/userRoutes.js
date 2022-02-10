@@ -1,11 +1,10 @@
 import express from 'express'
-import { UserControllers } from '../../controllers/userController.js';
-import { userValidation } from '../../validations/userValidation/user.validation.js';
+import userValidation from '../../validations/userValidation'
+import userController from '../../controllers/userController'
+const userRouter = express.Router()
 
-const route = express.Router()
-
-const userControllers = new UserControllers()
-route.post('/register', userControllers.register)
+userRouter.post("/register", userValidation, userController.register);
+userRouter.get("/", userController.getAllUsers);
 // route.post('/login', userControllers.login)
 
-export default route
+export default userRouter;

@@ -3,19 +3,21 @@ import mongoose from "mongoose";
 const schema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
   },
   password: {
     type: String,
-    required: true,
+    select: false,
   },
-  department_id: {
+  role: {
     type: String,
-    required: true,
+    default: "employee",
+  },
+  department: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department",
   },
 });
 

@@ -69,41 +69,120 @@ describe("TEST USERS ENDPOINT", () => {
         done();
       });
   });
-  // it("Should not login", (done) => {
-  //   request(app)
-  //     .post("/api/v1/users/login")
-  //     .send({
-  //       email: "test",
-  //       password: "test",
-  //     })
-  //     .end((err, res) => {
-  //       expect(res.statusCode).to.equal(403);
-  //       done();
-  //     });
-  // });
-  // it("Should login", (done) => {
-  //   request(app)
-  //     .post("/api/v1/users/login")
-  //     .send({
-  //       email: "ncuti65@gmail.com",
-  //       password: "Pass@123",
-  //     })
-  //     .end((err, res) => {
-  //       expect(res.statusCode).to.equal(200);
-  //       done();
-  //     });
-  // });
-  // it("Should not register user when email exist", (done) => {
-  //   request(app)
-  //     .post("/api/v1/users/register")
-  //     .send({
-  //       username: "test",
-  //       email: "ncuti65@gmail.com",
-  //       password: "Pass@123",
-  //     })
-  //     .end((err, res) => {
-  //       expect(res.statusCode).to.equal(409);
-  //       done();
-  //     });
-  // });
+
+  it("Should get user by id", (done) => {
+    request(app)
+      .get(`/api/v1/users/${id}`)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.have.property("user");
+        done();
+      });
+  });
+
+  it("Should not get user by id when not found", (done) => {
+    request(app)
+      .get(`/api/v1/users/60b4e38dceb4a50015741ca6`)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(404);
+        expect(res.body).to.have.property("message");
+        done();
+      });
+  });
+
+  it("Should not get user by id when not exists", (done) => {
+    request(app)
+      .get(`/api/v1/users/343534`)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(500);
+        expect(res.body).to.have.property("error");
+        done();
+      });
+  });
+
+  it("Should update user", (done) => {
+    request(app)
+      .patch(`/api/v1/users/${id}`)
+      .send(userMock.userUpdate)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.have.property("user");
+        done();
+      });
+  });
+
+  it("Should not update user when id not found", (done) => {
+    request(app)
+      .patch(`/api/v1/users/60b4e38dceb4a50015741ca6`)
+      .send(userMock.userUpdate)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(404);
+        expect(res.body).to.have.property("message");
+        done();
+      });
+  });
+
+  it("Should not update user when id not exists", (done) => {
+    request(app)
+      .patch(`/api/v1/users/343534`)
+      .send(userMock.userUpdate)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(500);
+        expect(res.body).to.have.property("error");
+        done();
+      });
+  });
+
+  it("Should delete user", (done) => {
+    request(app)
+      .delete(`/api/v1/users/${id}`)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.have.property("message");
+        done();
+      });
+  });
+
+  it("Should not delete user when id not found", (done) => {
+    request(app)
+      .delete(`/api/v1/users/60b4e38dceb4a50015741ca6`)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(404);
+        expect(res.body).to.have.property("message");
+        done();
+      });
+  });
+
+  it("Should not delete user when id not exists", (done) => {
+    request(app)
+      .delete(`/api/v1/users/343534`)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(500);
+        expect(res.body).to.have.property("error");
+        done();
+      });
+  });
+
+  it("Should not login when email not found", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send(userMock.userEmailNotFound)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(404);
+        expect(res.body).to.have.property("message");
+        done();
+      });
+  });
+
+  it("Should not login when password not match", (done) => {
+    request(app)
+      .post("/api/v1/users/login")
+      .send(userMock.userPasswordNotMatch)
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(400);
+        expect(res.body).to.have.property("message");
+        done();
+      });
+  });
+
 });

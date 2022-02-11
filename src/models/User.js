@@ -9,7 +9,6 @@ const schema = mongoose.Schema({
   },
   password: {
     type: String,
-    select: false,
   },
   role: {
     type: String,

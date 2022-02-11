@@ -152,6 +152,30 @@
         }
       }
     },
+    "/api/v1/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login a user",
+        "description": "Login a user",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "tags": ["Users"],
@@ -161,6 +185,74 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get a user by id",
+        "description": "Get a user by id",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update a user",
+        "description": "Update a user",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete a user",
+        "description": "Delete a user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
           }
         }
       }
@@ -194,6 +286,17 @@
           "type": "string"
         },
         "department_name": {
+          "type": "string"
+        }
+      }
+    },
+    "UserLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
           "type": "string"
         }
       }

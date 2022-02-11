@@ -17,4 +17,20 @@ export default {
     password: "Test@123",
     department_name: "Internship",
   },
+  userUpdate: {
+    name: "Ncuti",
+    email: "ncuti@gmail.com",
+  },
+  userLoggedIn: {
+    email: "ncuti@gmail.com",
+    password: "Test@123",
+  },
+  userPasswordNotMatch: {
+    email: "ncuti@gmail.com",
+    password: "Test123",
+  },
+  userEmailNotFound: {
+    email: "test@test.com",
+    password: "Test123",
+  },
 };

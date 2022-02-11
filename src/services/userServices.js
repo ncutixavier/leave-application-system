@@ -16,6 +16,23 @@ export const createUser = async (user) => {
 };
 
 export const getAllUsers = async () => {
-  const users = await User.find().populate("department");
+  const users = await User.find().select(["-password"]).populate("department");
   return users;
+};
+
+export const getUserById = async (id) => {
+  const user = await User.findById(id)
+    .select(["-password"])
+    .populate("department");
+  return user;
+};
+
+export const updateUser = async (id, user) => {
+  const userUpdated = await User.findByIdAndUpdate(id, user, { new: true });
+  return userUpdated;
+};
+
+export const deleteUser = async (id) => {
+  const userDeleted = await User.findByIdAndDelete(id);
+  return userDeleted;
 };

@@ -11,6 +11,13 @@
       "name": "DEV"
     }
   ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
   "paths": {
     "/": {
       "get": {
@@ -170,10 +177,140 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "Logged in"
           }
         }
+      }
+    },
+    "/api/v1/users/logout": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Logout a user",
+        "description": "Logout a user",
+        "operationId": "logoutUser",
+        "responses": {
+          "200": {
+            "description": "Logout"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/change-password": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Change password",
+        "description": "Change password",
+        "operationId": "changePassword",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserChangePassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changed"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/users/forgot-password": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Forgot password",
+        "description": "Forgot password",
+        "operationId": "forgotPassword",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserForgotPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Forgot password"
+          }
+        }
+      }
+    },
+    "/api/v1/users/reset-password/{token}": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Reset password",
+        "description": "Reset password",
+        "operationId": "resetPassword",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset password"
+          }
+        }
+      }
+    },
+    "/api/v1/users/update-profile": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update profile",
+        "description": "Update profile",
+        "operationId": "updateProfile",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdateProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile updated"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/users": {
@@ -297,6 +434,47 @@
           "type": "string"
         },
         "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserChangePassword": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "UserForgotPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "UserResetPassword": {
+      "type": "object",
+      "properties": {
+        "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "UserUpdateProfile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "department_name": {
           "type": "string"
         }
       }

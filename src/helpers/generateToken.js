@@ -3,7 +3,7 @@ import 'dotenv/config';
 
 const secret = process.env.JWT_SECRET;
 
-export const generateToken = (payload, expiresIn = '7d') => {
+export const generateToken = (payload, expiresIn ) => {
     const token = jwt.sign({ ...payload }, secret, { expiresIn });
     return token;
 };

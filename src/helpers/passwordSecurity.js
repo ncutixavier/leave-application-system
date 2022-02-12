@@ -9,6 +9,5 @@ export const hashPassword = (plainPassword) => {
 
 export const comparePassword = (plainPassword, hash) => {
     const result = bcrypt.compareSync(plainPassword, hash)
-    console.log("RESS::", result)
     return result
 }

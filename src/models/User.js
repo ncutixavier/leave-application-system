@@ -18,6 +18,10 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Department",
   },
+  isLoggedIn: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 export default mongoose.model("User", schema);

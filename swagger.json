@@ -284,6 +284,35 @@
         }
       }
     },
+    "/api/v1/users/update-profile": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update profile",
+        "description": "Update profile",
+        "operationId": "updateProfile",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserUpdateProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile updated"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/users": {
       "get": {
         "tags": ["Users"],
@@ -432,6 +461,20 @@
       "type": "object",
       "properties": {
         "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "UserUpdateProfile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "department_name": {
           "type": "string"
         }
       }

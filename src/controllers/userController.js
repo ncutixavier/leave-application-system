@@ -67,7 +67,10 @@ export class UserControllers {
         if (!valid) {
           res.status(400).json({ message: "Password doesn't match" });
         }
-        const token = await generateToken({ id: exist._id, role: exist.role }, "7d");
+        const token = await generateToken(
+          { id: exist._id, role: exist.role },
+          "7d"
+        );
         const user = await User.findByIdAndUpdate(exist._id, {
           isLoggedIn: true,
         });
@@ -218,20 +221,23 @@ export class UserControllers {
       res.status(500).json({
         message: "Error occured while changing password",
         error: error.message,
-      })
+      });
     }
   }
 
-  async userForgotPassword(req, res) { 
-    try { 
+  async userForgotPassword(req, res) {
+    try {
       const { email } = req.body;
       const user = await userExist(email);
-      if (!user) { 
+      if (!user) {
         return res.status(404).json({
           message: "User has not found",
         });
       }
-      const token = await generateToken({ id: user._id, role: user.role }, "1800s");
+      const token = await generateToken(
+        { id: user._id, role: user.role },
+        "1800s"
+      );
       const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
       sendEmail({
         to: email,
@@ -240,32 +246,63 @@ export class UserControllers {
       });
       return res.status(200).json({
         message: "Reset password link has been sent to your email",
-      })
-    } catch (error) { 
+      });
+    } catch (error) {
       res.status(500).json({
         message: "Error occured while forgot password",
         error: error.message,
-      })
+      });
     }
   }
 
-  async userResetPassword(req, res) { 
-    try { 
+  async userResetPassword(req, res) {
+    try {
       const { token } = req.params;
       const { newPassword } = req.body;
       const decoded = await decodeToken(token);
-      if (!decoded) { 
+      if (!decoded) {
         return res.status(401).json({
           message: "Invalid token, Use link sent to your email",
         });
       }
-      await updateUser(decoded.id, { password: await hashPassword(newPassword) });
+      await updateUser(decoded.id, {
+        password: await hashPassword(newPassword),
+      });
       return res.status(200).json({
         message: "Password has been reset successfully",
-      })
-    } catch (error) { 
+      });
+    } catch (error) {
       res.status(500).json({
         message: "Error occured while reset password",
+        error: error.message,
+      });
+    }
+  }
+
+  async userUpdateProfile(req, res) {
+    try {
+      if (req.user.isLoggedIn) {
+        const { id } = req.user;
+        const { name, email, department_name } = req.body;
+        const depExist = await departmentExist(department_name);
+        if (department_name && !depExist) {
+          return res.status(404).json({
+            message: "Department has not found",
+          });
+        }
+        const userProfile = await updateUser(id, {
+          name: name || req.user.name,
+          email: email || req.user.email,
+          department: depExist._id || req.user.department,
+        });
+        return res.status(200).json({
+          message: "Profile updated successfully",
+          user: userProfile,
+        })
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Error occured while updating profile",
         error: error.message,
       })
     }

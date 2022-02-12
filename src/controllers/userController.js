@@ -1,4 +1,6 @@
 import { generateToken } from "../helpers/generateToken.js";
+import sendEmail from "../helpers/sendEmail.js";
+import { registerTemplate } from "../helpers/message/registerTemplate.js";
 import { comparePassword, hashPassword } from "../helpers/passwordSecurity";
 import {
   userExist,
@@ -31,6 +33,16 @@ export class UserControllers {
           department: depExist._id,
         };
         const createdUser = await createUser(user);
+        sendEmail({
+          to: createdUser.email,
+          subject: "Leave Application System - Registration",
+          message: registerTemplate({
+            name: createdUser.name,
+            email: createdUser.email,
+            role: createdUser.role,
+            password: req.body.password,
+          }),
+        });
         res.status(201).json({
           status: 201,
           message: "user registered successfully",
@@ -66,7 +78,7 @@ export class UserControllers {
       res.status(500).json({
         message: "Error occured while logging in, try again",
         error: error.message,
-      })
+      });
     }
   }
 

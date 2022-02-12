@@ -1,6 +1,8 @@
-import { generateToken } from "../helpers/generateToken.js";
+import User from "../models/User.js";
+import { generateToken, decodeToken } from "../helpers/generateToken.js";
 import sendEmail from "../helpers/sendEmail.js";
 import { registerTemplate } from "../helpers/message/registerTemplate.js";
+import { resetPasswordTemplate } from "../helpers/message/resetPasswordTemplate.js";
 import { comparePassword, hashPassword } from "../helpers/passwordSecurity";
 import {
   userExist,
@@ -65,11 +67,15 @@ export class UserControllers {
         if (!valid) {
           res.status(400).json({ message: "Password doesn't match" });
         }
-        const token = await generateToken({ id: exist._id });
+        const token = await generateToken({ id: exist._id, role: exist.role }, "7d");
+        const user = await User.findByIdAndUpdate(exist._id, {
+          isLoggedIn: true,
+        });
+
         res.status(200).json({
           message: "Logged in successfully",
           token: token,
-          user: exist,
+          user: user,
         });
       } else {
         res.status(404).json({ message: "User email doesn't exist" });
@@ -169,6 +175,99 @@ export class UserControllers {
         message: "Error occured while deleting user",
         error: error.message,
       });
+    }
+  }
+
+  async userLogout(req, res) {
+    try {
+      if (req.user.isLoggedIn) {
+        await updateUser(req.user._id, { isLoggedIn: false });
+        res.status(200).json({
+          message: "User logged out successfully",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Error occured while logging out user",
+        error: error.message,
+      });
+    }
+  }
+
+  async userChangePassword(req, res) {
+    try {
+      if (req.user.isLoggedIn) {
+        const { id } = req.user;
+        const { oldPassword, newPassword } = req.body;
+        const isoldPasswordValid = await comparePassword(
+          oldPassword,
+          req.user.password
+        );
+        if (!isoldPasswordValid) {
+          return res.status(400).json({
+            message: "Old password doesn't match",
+          });
+        }
+        const newPasswordHash = await hashPassword(newPassword);
+        await updateUser(id, { password: newPasswordHash });
+        return res.status(200).json({
+          message: "Password changed successfully",
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Error occured while changing password",
+        error: error.message,
+      })
+    }
+  }
+
+  async userForgotPassword(req, res) { 
+    try { 
+      const { email } = req.body;
+      const user = await userExist(email);
+      if (!user) { 
+        return res.status(404).json({
+          message: "User has not found",
+        });
+      }
+      const token = await generateToken({ id: user._id, role: user.role }, "1800s");
+      const resetPasswordLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+      sendEmail({
+        to: email,
+        subject: "Leave Application System - Reset Password",
+        message: resetPasswordTemplate(resetPasswordLink),
+      });
+      return res.status(200).json({
+        message: "Reset password link has been sent to your email",
+      })
+    } catch (error) { 
+      res.status(500).json({
+        message: "Error occured while forgot password",
+        error: error.message,
+      })
+    }
+  }
+
+  async userResetPassword(req, res) { 
+    try { 
+      const { token } = req.params;
+      const { newPassword } = req.body;
+      const decoded = await decodeToken(token);
+      if (!decoded) { 
+        return res.status(401).json({
+          message: "Invalid token, Use link sent to your email",
+        });
+      }
+      await updateUser(decoded.id, { password: await hashPassword(newPassword) });
+      return res.status(200).json({
+        message: "Password has been reset successfully",
+      })
+    } catch (error) { 
+      res.status(500).json({
+        message: "Error occured while reset password",
+        error: error.message,
+      })
     }
   }
 }

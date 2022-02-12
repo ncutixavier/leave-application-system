@@ -1,5 +1,5 @@
-export const registerTemplate = (user) => {
-    return `
+export const resetPasswordTemplate = (resetPasswordLink) => {
+  return `
         <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
@@ -147,7 +147,7 @@ export const registerTemplate = (user) => {
                             <td class="headline">Leave Application System!</td>
                           </tr>
                           <tr class="">
-                            <td class="sub-headline">Welcome ${user.name}!</td>
+                            <td class="sub-headline">Request to reset password!</td>
                           </tr>
                           <tr>
                             <td>
@@ -166,33 +166,10 @@ export const registerTemplate = (user) => {
                                         style="color: #444; font-weight: 400"
                                       >
                                         <br /><br />
-                                        A leave application system that helps
-                                        you request leave, track and manage your
-                                        leave requests with ease and efficiency.
-                                        <br /><br />
-                                        You have successfully been registered to
-                                        use system as a <em>${user.role}</em
-                                        ><br />
+                                        We cannot simply send you your old password. A unique link to reset your password 
+                                        <b>which will expire in 30 minutes</b>, has been generated for you. To reset your password, 
+                                        click the following link and follow the instructions.
                                         <br />
-                                        Your login credentials are provided
-                                        below:
-                                        <br />
-                                        <span style="font-weight: bold"
-                                          >Email: &nbsp;</span
-                                        ><span
-                                          style="font-weight: lighter"
-                                          class=""
-                                          >${user.email}</span
-                                        >
-                                        <br />
-                                        <span style="font-weight: bold"
-                                          >Password: &nbsp;</span
-                                        ><span
-                                          style="font-weight: lighter"
-                                          class=""
-                                          >${user.password}</span
-                                        >
-                                        <br /><br />
                                         <br />
                                       </td>
                                     </tr>
@@ -219,8 +196,8 @@ export const registerTemplate = (user) => {
                                     width: 350px;
                                     -webkit-text-size-adjust: none;
                                   "
-                                  href="https://leaveapp.vercel.app"
-                                  >Visit Account and Start Managing</a
+                                  href="${resetPasswordLink}"
+                                  >Reset Password</a
                                 >
                               </div>
                               <br />

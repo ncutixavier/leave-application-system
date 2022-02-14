@@ -11,6 +11,8 @@ on:
 env: 
   TEST_DB: ${{ secrets.TEST_DB }}
   JWT_SECRETE: ${{ secrets.JWT_SECRETE }}
+  USER_EMAIL: ${{ secrets.USER_EMAIL }}
+  USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
 jobs:
   build:
 

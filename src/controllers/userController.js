@@ -20,11 +20,11 @@ export class UserControllers {
       const exist = await userExist(req.body.email);
       const depExist = await departmentExist(req.body.department_name);
       if (exist) {
-        res.status(409).json({
+        return res.status(409).json({
           message: "User with this email already exist",
         });
       } else if (!depExist) {
-        res.status(404).json({
+        return res.status(404).json({
           message: "Department has not found",
         });
       } else {
@@ -45,14 +45,14 @@ export class UserControllers {
             password: req.body.password,
           }),
         });
-        res.status(201).json({
+        return res.status(201).json({
           status: 201,
           message: "user registered successfully",
           user: createdUser,
         });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while registering user, try again",
         error: error.message,
       });
@@ -65,7 +65,7 @@ export class UserControllers {
       if (exist) {
         const valid = await comparePassword(req.body.password, exist.password);
         if (!valid) {
-          res.status(400).json({ message: "Password doesn't match" });
+          return res.status(400).json({ message: "Password doesn't match" });
         }
         const token = await generateToken(
           { id: exist._id, role: exist.role },
@@ -75,16 +75,16 @@ export class UserControllers {
           isLoggedIn: true,
         });
 
-        res.status(200).json({
+        return res.status(200).json({
           message: "Logged in successfully",
           token: token,
           user: user,
         });
       } else {
-        res.status(404).json({ message: "User email doesn't exist" });
+        return res.status(404).json({ message: "User email doesn't exist" });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while logging in, try again",
         error: error.message,
       });
@@ -98,7 +98,7 @@ export class UserControllers {
         users,
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while getting all users",
         error: error.message,
       });
@@ -117,7 +117,7 @@ export class UserControllers {
         user,
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while getting user by id",
         error: error.message,
       });
@@ -135,7 +135,7 @@ export class UserControllers {
           message: "User has not found",
         });
       } else if (department_name && !depExist) {
-        res.status(404).json({
+        return res.status(404).json({
           message: "Department has not found",
         });
       } else {
@@ -153,7 +153,7 @@ export class UserControllers {
         });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while updating user",
         error: error.message,
       });
@@ -174,7 +174,7 @@ export class UserControllers {
         message: "User deleted successfully",
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while deleting user",
         error: error.message,
       });
@@ -185,12 +185,12 @@ export class UserControllers {
     try {
       if (req.user.isLoggedIn) {
         await updateUser(req.user._id, { isLoggedIn: false });
-        res.status(200).json({
+        return res.status(200).json({
           message: "User logged out successfully",
         });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while logging out user",
         error: error.message,
       });
@@ -218,7 +218,7 @@ export class UserControllers {
         });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while changing password",
         error: error.message,
       });
@@ -248,7 +248,7 @@ export class UserControllers {
         message: "Reset password link has been sent to your email",
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while forgot password",
         error: error.message,
       });
@@ -272,7 +272,7 @@ export class UserControllers {
         message: "Password has been reset successfully",
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while reset password",
         error: error.message,
       });
@@ -301,10 +301,10 @@ export class UserControllers {
         })
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error occured while updating profile",
         error: error.message,
-      })
+      });
     }
   }
 }

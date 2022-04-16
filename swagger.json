@@ -526,6 +526,39 @@
             "Bearer": []
           }
         ]
+      },
+      "put": {
+        "tags": ["Requests"],
+        "summary": "Approve/Reject a request",
+        "description": "Accept a request",
+        "operationId": "acceptRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of request to return",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Request object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/changeRequestStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Accepted"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   },
@@ -630,16 +663,21 @@
           "type": "integer",
           "default": 1
         },
-        "status": {
-          "type": "string",
-          "default": "Pending"
-        },
         "type": {
           "type": "string",
           "default": "Vacation"
         },
         "reason": {
           "type": "string"
+        }
+      }
+    },
+    "changeRequestStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "default": "Pending"
         }
       }
     }

@@ -1,6 +1,9 @@
 import express from "express";
 import requestController from "../../controllers/request.controller";
-import { requestValidation } from "../../validations/request.validation";
+import {
+  requestValidation,
+  updateRequestValidation,
+} from "../../validations/request.validation";
 import { protect, restrictTo } from "../../middlewares/protectRoute";
 import {
   checkPreviousRequest,
@@ -39,6 +42,13 @@ requestRouter
     checkRequestExists,
     checkPendingRequest,
     requestController.deleteRequest
+  )
+  .put(
+    protect,
+    restrictTo("admin", "manager"),
+    updateRequestValidation,
+    checkPendingRequest,
+    requestController.changeRequestStatus
   );
 
 export default requestRouter;

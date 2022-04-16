@@ -32,7 +32,7 @@ export const checkPendingRequest = async (req, res, next) => {
   const request = await Request.findById(req.params.id);
   if (request.status.toLowerCase() !== "pending") {
     return res.status(400).json({
-      message: "Request is being processed, please wait",
+      message: "Request is not pending, you can't change it",
     });
   }
   next();

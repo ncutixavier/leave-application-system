@@ -11,7 +11,6 @@ class RequestController {
       const data = {
         ...req.body,
         user: req.user._id,
-        status: req.body.status.toLowerCase() || "pending",
       };
       const request = await sendRequest(data);
       return res.status(201).json({
@@ -70,6 +69,23 @@ class RequestController {
     } catch (error) {
       return res.status(500).json({
         message: "Error occured while deleting request",
+        error: error.message,
+      });
+    }
+  }
+
+  async changeRequestStatus(req, res) { 
+    try {
+      const { id } = req.params;
+      const request = await updateRequest(id, {
+        status: req.body.status.toLowerCase(),
+      });
+      return res.status(200).json({
+        request,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error occured while updating request",
         error: error.message,
       });
     }

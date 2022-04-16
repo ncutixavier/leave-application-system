@@ -64,7 +64,12 @@
           "201": {
             "description": "Created"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/departments/{id}": {
@@ -113,7 +118,12 @@
           "201": {
             "description": "Updated"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
         "tags": ["Departments"],
@@ -132,7 +142,12 @@
           "201": {
             "description": "Deleted"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/api/v1/users/register": {
@@ -408,6 +423,110 @@
           }
         }
       }
+    },
+    "/api/v1/requests": {
+      "get": {
+        "tags": ["Requests"],
+        "summary": "Get all requests",
+        "description": "Get all requests",
+        "operationId": "getRequests",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Requests"],
+        "summary": "Create a request",
+        "description": "Create a request",
+        "operationId": "createRequest",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Request object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/requests/{id}": {
+      "patch": {
+        "tags": ["Requests"],
+        "summary": "Update a request",
+        "description": "Update a request",
+        "operationId": "updateRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of request to return",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Request object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Requests"],
+        "summary": "Delete a request",
+        "description": "Delete a request",
+        "operationId": "deleteRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of request to return",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -490,6 +609,36 @@
           "type": "string"
         },
         "department_name": {
+          "type": "string"
+        }
+      }
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "default": "2022-05-01"
+        },
+        "returnDate": {
+          "type": "string",
+          "format": "date",
+          "default": "2022-05-05"
+        },
+        "numberOfDays": {
+          "type": "integer",
+          "default": 1
+        },
+        "status": {
+          "type": "string",
+          "default": "Pending"
+        },
+        "type": {
+          "type": "string",
+          "default": "Vacation"
+        },
+        "reason": {
           "type": "string"
         }
       }

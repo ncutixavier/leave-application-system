@@ -13,8 +13,7 @@
     "dev": {
       "command": "nodemon --exec npx babel-node ./src/app.js",
       "env": {
-        "NODE_ENV": "development",
-        "PORT": 3010
+        "NODE_ENV": "development"
       }
     },
     "test": {

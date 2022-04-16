@@ -52,4 +52,8 @@ app.listen(port, () => {
   console.log(`The server is running on port ${port}`);
 });
 
+process.on("exit", function (code) {
+  return console.log(`Process to exit with code ${code}`);
+});
+
 export default app;

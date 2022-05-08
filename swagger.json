@@ -267,6 +267,28 @@
             "description": "Forgot password"
           }
         }
+      },
+      "put": {
+        "tags": ["Users"],
+        "summary": "Forgot password",
+        "description": "Forgot password",
+        "operationId": "forgotPassword",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserForgotPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Forgot password"
+          }
+        }
       }
     },
     "/api/v1/users/reset-password/{token}": {
@@ -289,6 +311,30 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/UserResetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset password"
+          }
+        }
+      }
+    },
+    "/api/v1/users/reset-password": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Reset password",
+        "description": "Reset password",
+        "operationId": "resetPassword",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MobileUserResetPassword"
             }
           }
         ],
@@ -678,6 +724,20 @@
         "status": {
           "type": "string",
           "default": "Pending"
+        }
+      }
+    },
+    "MobileUserResetPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "otp": {
+          "type": "string"
         }
       }
     }

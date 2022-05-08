@@ -1,6 +1,6 @@
 import joi from "@hapi/joi";
 
-const userValidation = async (req, res, next) => {
+export const userValidation = async (req, res, next) => {
   const userSchema = joi.object({
     name: joi.string().required().messages({
       "any.required": "Name is required",
@@ -28,4 +28,18 @@ const userValidation = async (req, res, next) => {
   }
 };
 
-export default userValidation;
+export const resetPasswordValidation = async (req, res, next) => { 
+  const schema = joi.object({
+    password: joi.string().min(8).required(),
+    otp: joi.string().required(),
+    email: joi.string().email().required(),
+  })
+
+  const value = await schema.validate(req.body);
+  if (value.error) {
+    res.status(400).json({
+      message: value.error.details[0].message.replace(/["'`]+/g, ""),
+    });
+  }
+  next();
+}

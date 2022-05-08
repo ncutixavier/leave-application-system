@@ -21,6 +21,14 @@ const schema = mongoose.Schema({
   isLoggedIn: {
     type: Boolean,
     default: false,
+  },
+  otp: {
+    type: String,
+    default: "",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   }
 });
 

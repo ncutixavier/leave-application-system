@@ -8,7 +8,7 @@ const schema = mongoose.Schema({
   },
   remainingDays: {
     type: Number,
-    default: process.env.MAX_DAYS,
+    default: process.env.MAX_DAYS || 18,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

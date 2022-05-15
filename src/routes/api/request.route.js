@@ -47,7 +47,7 @@ requestRouter
     protect,
     restrictTo("admin", "manager"),
     updateRequestValidation,
-    checkPendingRequest,
+    // checkPendingRequest,
     requestController.changeRequestStatus
   );
 

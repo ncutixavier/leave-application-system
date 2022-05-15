@@ -606,6 +606,24 @@
           }
         ]
       }
+    },
+    "/api/v1/reports": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "Get user reports",
+        "description": "Get user reports",
+        "operationId": "getUserReport",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -700,11 +718,6 @@
           "format": "date",
           "default": "2022-05-01"
         },
-        "returnDate": {
-          "type": "string",
-          "format": "date",
-          "default": "2022-05-05"
-        },
         "numberOfDays": {
           "type": "integer",
           "default": 1
@@ -723,7 +736,7 @@
       "properties": {
         "status": {
           "type": "string",
-          "default": "Pending"
+          "default": "pending"
         }
       }
     },

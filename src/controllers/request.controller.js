@@ -4,14 +4,27 @@ import {
   updateRequest,
   deleteRequest,
 } from "../services/request.service";
+import { getReturnDate } from "../utils/index";
+import { getReport, updateReport } from "../services/report.service";
 
 class RequestController {
   async createRequest(req, res) {
     try {
       const data = {
         ...req.body,
+        returnDate: getReturnDate(req.body.startDate, req.body.numberOfDays),
         user: req.user._id,
       };
+      const report = await getReport(req.user._id);
+      if (report) {
+        const { remainingDays } = report;
+        const { numberOfDays } = data;
+        if (numberOfDays > remainingDays) {
+          return res.status(400).json({
+            message: `You have exceeded the maximum number of days you can request. You have ${remainingDays} days remaining.`,
+          });
+        }
+      }
       const request = await sendRequest(data);
       return res.status(201).json({
         request,
@@ -74,12 +87,21 @@ class RequestController {
     }
   }
 
-  async changeRequestStatus(req, res) { 
+  async changeRequestStatus(req, res) {
     try {
       const { id } = req.params;
       const request = await updateRequest(id, {
         status: req.body.status.toLowerCase(),
       });
+
+      if (request.status === "approved") {
+        const report = await getReport(request.user);
+        const { remainingDays, usedDays } = report;
+        await updateReport(report._id, {
+          usedDays: usedDays + request.numberOfDays,
+          remainingDays: remainingDays - request.numberOfDays,
+        });
+      }
       return res.status(200).json({
         request,
       });

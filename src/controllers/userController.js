@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Report from "../models/Report.js";
 import { generateToken, decodeToken } from "../helpers/generateToken.js";
 import sendEmail from "../helpers/sendEmail.js";
 import { registerTemplate } from "../helpers/message/registerTemplate.js";
@@ -15,6 +16,7 @@ import {
 } from "../services/userServices.js";
 import { departmentExist } from "../services/departmentServices.js";
 import { generateOtp } from "../services/otp.service.js";
+import { createReport } from "../services/report.service.js";
 
 export class UserControllers {
   async register(req, res) {
@@ -37,6 +39,9 @@ export class UserControllers {
           department: depExist._id,
         };
         const createdUser = await createUser(user);
+        await createReport({
+          user: createdUser._id
+        });
         sendEmail({
           to: createdUser.email,
           subject: "Leave Application System - Registration",
@@ -282,7 +287,6 @@ export class UserControllers {
       return res.status(200).json({
         message: "OTP has been sent to your email",
       });
-
     } catch (error) {
       return res.status(500).json({
         message: "Error occured while forgot password",
@@ -315,10 +319,13 @@ export class UserControllers {
     }
   }
 
-  async mobileUserResetPassword(req, res) { 
-    try { 
+  async mobileUserResetPassword(req, res) {
+    try {
       const { password, email } = req.body;
-      await updateUser(req.user._id, { password: await hashPassword(password), otp: "" });
+      await updateUser(req.user._id, {
+        password: await hashPassword(password),
+        otp: "",
+      });
       return res.status(200).json({
         message: "Password has been reset successfully",
       });
@@ -326,8 +333,8 @@ export class UserControllers {
       return res.status(500).json({
         message: "Error occured while verifying otp",
         error: error.message,
-      })
-     }
+      });
+    }
   }
 
   async userUpdateProfile(req, res) {

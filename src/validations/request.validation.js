@@ -3,7 +3,6 @@ import joi from "@hapi/joi";
 export const requestValidation = (req, res, next) => {
   const requestSchema = joi.object({
     startDate: joi.date().min("now").required(),
-    returnDate: joi.date().min("now").required(),
     numberOfDays: joi.number().required(),
     type: joi.string().required(),
     reason: joi.string().required(),
@@ -20,7 +19,7 @@ export const requestValidation = (req, res, next) => {
 
 export const updateRequestValidation = (req, res, next) => {
   const schema = joi.object({
-    status: joi.string().valid("pending", "approved", "rejected").required(),
+    status: joi.string().valid("approved", "rejected").required(),
   });
 
   const value = schema.validate(req.body);

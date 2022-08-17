@@ -1,7 +1,9 @@
 import Request from "../models/Request";
 
 export const checkPreviousRequest = async (req, res, next) => {
-  const request = await Request.find().sort({ _id: -1 }).limit(1);
+  const request = await Request.find()
+    .where("user").equals(req.user._id)
+    .sort({ _id: -1 }).limit(1);
   if (request.length > 0) {
     if (request[0].status === "pending") {
       return res.status(400).json({

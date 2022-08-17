@@ -3,10 +3,12 @@ import Request from "../models/Request";
 export const getAllRequests = async (user) => {
   const role = ["admin", "manager"];
   if (user.role.includes(role)) {
-    const requests = await Request.find();
+    const requests = await Request.find().sort([["startDate", "descending"]]);
     return requests;
   } else {
-    const requests = await Request.find({ user: user._id });
+    const requests = await Request.find({ user: user._id }).sort([
+      ["startDate", "descending"],
+    ]);
     return requests;
   }
 };

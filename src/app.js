@@ -10,7 +10,7 @@ import "dotenv/config";
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 const mode = process.env.NODE_ENV || "development";
 
 try {

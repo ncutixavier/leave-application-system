@@ -21,8 +21,8 @@ export const checkRequestExists = async (req, res, next) => {
       message: "Request has not found",
     });
   }
-  if (request.user != req.user._id && req.user.role != "admin") {
-    return res.status(401).json({
+  if (request.user._id.toString() !== req.user._id.toString()) {
+    return res.status(400).json({
       message: "Request does not belong to you",
     });
   }
@@ -30,6 +30,7 @@ export const checkRequestExists = async (req, res, next) => {
   next();
 };
 
+//TODO:: check if request is belongs to user
 export const checkPendingRequest = async (req, res, next) => {
   const request = await Request.findById(req.params.id);
   if (request.status.toLowerCase() !== "pending") {

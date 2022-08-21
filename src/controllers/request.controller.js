@@ -56,7 +56,7 @@ class RequestController {
       const { id } = req.params;
       const request = await updateRequest(id, {
         startDate: req.body.startDate || req.request.startDate,
-        returnDate: req.body.returnDate || req.request.returnDate,
+        returnDate: getReturnDate(req.body.startDate, req.body.numberOfDays),
         numberOfDays: req.body.numberOfDays || req.request.numberOfDays,
         type: req.body.type || req.request.type,
         reason: req.body.reason || req.request.reason,
